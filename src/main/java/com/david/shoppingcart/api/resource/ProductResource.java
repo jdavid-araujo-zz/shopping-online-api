@@ -5,10 +5,13 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,7 +29,7 @@ public class ProductResource {
 		this.productService = productService;
 	}
 
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	@PostMapping
 	private ResponseEntity<Product> save(@Valid @RequestBody Product entity) {
 
 		Product product = this.productService.save(entity);
@@ -34,7 +37,7 @@ public class ProductResource {
 		return ResponseEntity.status(HttpStatus.CREATED).body(product);
 	}
 
-	@RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
+	@PutMapping(value = "/{id}")
 	private ResponseEntity<Product> update(@PathVariable Long id, @RequestBody Product entity) {
 
 		Product product = this.productService.update(id, entity);
@@ -42,7 +45,7 @@ public class ProductResource {
 		return ResponseEntity.ok(product);
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@GetMapping(value = "/{id}")
 	private ResponseEntity<Product> findById(@PathVariable Long id) {
 
 		Product product = this.productService.findById(id);
@@ -50,7 +53,7 @@ public class ProductResource {
 		return ResponseEntity.ok(product);
 	}
 
-	@RequestMapping(value = "", method = RequestMethod.GET)
+	@GetMapping
 	private ResponseEntity<Iterable<Product>> findAll() {
 
 		Iterable<Product> category = this.productService.findAll();
@@ -59,7 +62,7 @@ public class ProductResource {
 	}
 
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+	@DeleteMapping(value = "/{id}")
 	private void delete(@PathVariable Long id) {
 		this.productService.deleteById(id);
 	}

@@ -5,10 +5,13 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,7 +29,7 @@ public class ItemResource {
 		this.itemService = itemService;
 	}
 
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	@PostMapping
 	private ResponseEntity<Item> save(@Valid @RequestBody Item entity) {
 
 		Item item = this.itemService.save(entity);
@@ -34,7 +37,7 @@ public class ItemResource {
 		return ResponseEntity.status(HttpStatus.CREATED).body(item);
 	}
 
-	@RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
+	@PutMapping(value = "/{id}")
 	private ResponseEntity<Item> update(@PathVariable Long id, @RequestBody Item entity) {
 
 		Item item = this.itemService.update(id, entity);
@@ -42,7 +45,7 @@ public class ItemResource {
 		return ResponseEntity.ok(item);
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@GetMapping(value = "/{id}")
 	private ResponseEntity<Item> findById(@PathVariable Long id) {
 
 		Item item = this.itemService.findById(id);
@@ -51,7 +54,7 @@ public class ItemResource {
 	}
 
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+	@DeleteMapping(value = "/{id}")
 	private void delete(@PathVariable Long id) {
 		this.itemService.deleteById(id);
 	}

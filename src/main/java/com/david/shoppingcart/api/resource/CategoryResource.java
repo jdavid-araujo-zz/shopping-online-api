@@ -6,10 +6,13 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,7 +30,7 @@ public class CategoryResource {
 		this.categoryService = categoryService;
 	}
 
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	@PostMapping
 	private ResponseEntity<Category> save(@Valid @RequestBody Category entity) {
 
 		Category category = this.categoryService.save(entity);
@@ -35,7 +38,7 @@ public class CategoryResource {
 		return ResponseEntity.status(HttpStatus.CREATED).body(category);
 	}
 
-	@RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
+	@PutMapping(value = "/{id}")
 	private ResponseEntity<Category> update(@PathVariable Long id, @RequestBody Category entity) {
 
 		Category category = this.categoryService.update(id, entity);
@@ -43,7 +46,7 @@ public class CategoryResource {
 		return ResponseEntity.ok(category);
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@GetMapping(value = "/{id}")
 	private ResponseEntity<Category> findById(@PathVariable Long id) {
 
 		Category category = this.categoryService.findById(id);
@@ -51,7 +54,7 @@ public class CategoryResource {
 		return ResponseEntity.ok(category);
 	}
 
-	@RequestMapping(value = "", method = RequestMethod.GET)
+	@GetMapping
 	private ResponseEntity<Iterable<Category>> findAll() {
 
 		Iterable<Category> category = this.categoryService.findAll();
@@ -60,7 +63,7 @@ public class CategoryResource {
 	}
 
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+	@DeleteMapping(value = "/{id}")
 	private void delete(@PathVariable Long id) {
 		this.categoryService.deleteById(id);
 	}
